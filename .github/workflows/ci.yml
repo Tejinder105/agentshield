@@ -1,0 +1,80 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Sync workspace
+        run: uv sync --all-packages --dev
+
+      - name: Lint (ruff)
+        run: uv run ruff check .
+
+      - name: Format check (ruff)
+        run: uv run ruff format --check .
+
+      - name: Type check (mypy --strict)
+        # One mypy invocation per package, not `mypy packages eval` as a single
+        # call: every package has its own `tests/conftest.py`, and those
+        # files deliberately have no `tests/__init__.py` (see pytest's
+        # --import-mode=importlib note below) so mypy's --explicit-package-bases
+        # resolution collapses every one of them to the same bare module name
+        # "conftest" and refuses to proceed past the first collision. Looping
+        # per-package gives each `tests/` directory its own mypy run, with no
+        # cross-package collision possible.
+        run: |
+          set -e
+          for pkg in packages/*/; do
+            uv run mypy "${pkg%/}"
+          done
+          if [ -d eval ]; then
+            # `eval` is a valid Python module name (and a builtin), so
+            # `mypy eval` / `mypy eval/src` maps sources as
+            # `eval.src.agentshield_eval` *and* as the installed
+            # `agentshield_eval` package, then refuses the collision.
+            # `-p agentshield_eval` uses the installed package only.
+            uv run mypy -p agentshield_eval
+            uv run mypy eval/tests
+          fi
+
+      - name: Test (pytest + hypothesis)
+        run: uv run pytest --cov --cov-report=term-missing
+
+      - name: Security scan (semgrep)
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/python
+
+      - name: Dependency audit (pip-audit)
+        run: uv run pip-audit --strict
+
+  console:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/console
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: apps/console/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build

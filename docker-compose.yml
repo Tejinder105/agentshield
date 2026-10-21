@@ -1,0 +1,57 @@
+name: agentshield
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: agentshield-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: agentshield
+      POSTGRES_PASSWORD: agentshield
+      POSTGRES_DB: agentshield
+    ports:
+      - "5432:5432"
+    volumes:
+      - agentshield-postgres-data:/var/lib/postgresql/data
+      - ./infra/sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agentshield -d agentshield"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: agentshield-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - agentshield-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  gateway:
+    build:
+      context: .
+      dockerfile: packages/agentshield-gateway/Dockerfile
+    container_name: agentshield-gateway
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      AGENTSHIELD_DATABASE_URL: postgresql+asyncpg://agentshield:agentshield@postgres:5432/agentshield
+      AGENTSHIELD_REDIS_URL: redis://redis:6379/0
+      AGENTSHIELD_SHADOW_MODE: "false"
+    ports:
+      - "8080:8080"
+
+volumes:
+  agentshield-postgres-data:
+  agentshield-redis-data:

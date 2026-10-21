@@ -1,0 +1,21 @@
+[project]
+name = "agentshield-observability"
+version = "0.1.0"
+description = "OpenTelemetry instrumentation (GenAI semantic conventions) for the gateway's decision pipeline, plus a shadow/log-only enforcement mode."
+requires-python = ">=3.11"
+dependencies = [
+    "agentshield-core",
+    "agentshield-gateway",
+    "opentelemetry-api>=1.27",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentshield_observability"]
+
+[tool.uv.sources]
+agentshield-core = { workspace = true }
+agentshield-gateway = { workspace = true }

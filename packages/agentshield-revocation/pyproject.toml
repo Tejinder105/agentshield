@@ -1,0 +1,18 @@
+[project]
+name = "agentshield-revocation"
+version = "0.1.0"
+description = "Emergency revocation: global and per-session epoch counters, a kill switch that drains pending approvals, and a blast-radius report over the ledger."
+requires-python = ">=3.11"
+dependencies = [
+    "agentshield-ledger",
+]
+
+[project.optional-dependencies]
+redis = ["redis>=5.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentshield_revocation"]

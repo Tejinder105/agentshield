@@ -1,0 +1,35 @@
+[project]
+name = "agentshield-eval"
+version = "0.1.0"
+description = "Agent Shield's security evaluation harness: an AgentDojo BasePipelineElement integration, an AgentDyn-shaped over-defense measurement loader, a defense-aware adaptive attack suite, and a per-pillar ablation runner."
+requires-python = ">=3.11"
+dependencies = [
+    "agentshield-core",
+    "agentshield-policy",
+    "agentshield-gateway",
+    "agentshield-confinement",
+    "agentshield-sdk",
+    "agentshield-ledger",
+    "agentshield-approvals",
+    "pydantic>=2.9",
+    "agentdojo>=0.1.35",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentshield_eval"]
+
+[tool.uv.sources]
+agentshield-core = { workspace = true }
+agentshield-policy = { workspace = true }
+agentshield-gateway = { workspace = true }
+agentshield-confinement = { workspace = true }
+agentshield-sdk = { workspace = true }
+agentshield-ledger = { workspace = true }
+agentshield-approvals = { workspace = true }
+
+[dependency-groups]
+dev = ["pytest>=8.3", "pytest-asyncio>=0.24"]

@@ -1,0 +1,12 @@
+apiVersion: v2
+name: agentshield
+description: Agent Shield reference-monitor deployment -- gateway, console API, Postgres 16, Redis.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - security
+  - agents
+  - mcp
+sources:
+  - https://github.com/example/agentshield

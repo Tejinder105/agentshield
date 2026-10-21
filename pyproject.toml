@@ -1,0 +1,90 @@
+[project]
+name = "agentshield-workspace"
+version = "0.1.0"
+description = "Agent Shield: a deterministic, out-of-band security framework for action-taking AI agents."
+requires-python = ">=3.11"
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = [
+    "packages/agentshield-core",
+    "packages/agentshield-policy",
+    "packages/agentshield-ledger",
+    "packages/agentshield-approvals",
+    "packages/agentshield-revocation",
+    "packages/agentshield-gateway",
+    "packages/agentshield-sdk",
+    "packages/agentshield-confinement",
+    "packages/agentshield-observability",
+    "packages/agentshield-console-api",
+    "eval",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
+    "hypothesis>=6.115",
+    "mypy>=1.13",
+    "ruff>=0.8",
+    "pip-audit>=2.7",
+    "aiosqlite>=0.20",
+    "fakeredis>=2.20",
+    "redis>=5.0",
+    "openai-agents>=0.20",
+    "langchain-core>=1.0",
+    "opentelemetry-sdk>=1.27",
+]
+
+[tool.uv.sources]
+agentshield-core = { workspace = true }
+agentshield-policy = { workspace = true }
+agentshield-ledger = { workspace = true }
+agentshield-approvals = { workspace = true }
+agentshield-revocation = { workspace = true }
+agentshield-gateway = { workspace = true }
+agentshield-sdk = { workspace = true }
+agentshield-confinement = { workspace = true }
+agentshield-observability = { workspace = true }
+agentshield-console-api = { workspace = true }
+agentshield-eval = { workspace = true }
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["packages", "eval"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "S", "A", "C4", "SIM"]
+ignore = ["S101"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+namespace_packages = true
+explicit_package_bases = true
+warn_unused_ignores = true
+plugins = []
+
+[[tool.mypy.overrides]]
+# z3-solver ships no inline type stubs (`py.typed`) and no stub-only
+# package exists for it; this project's own typed `ExprRef`/`BoolRef`
+# usage inside `agentshield_policy.subsumption` is still fully checked --
+# only the handful of z3-internal call sites fall back to `Any`.
+module = ["z3", "z3.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# agentdojo (the eval harness's benchmark dependency) ships no `py.typed`
+# marker and no stub-only package exists for it either; this project's own
+# `agentshield_eval` call sites into it are still fully checked -- only
+# the handful of agentdojo-internal attribute accesses fall back to `Any`.
+module = ["agentdojo", "agentdojo.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["packages", "eval"]
+addopts = "-ra -q --import-mode=importlib"

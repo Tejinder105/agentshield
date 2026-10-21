@@ -1,0 +1,19 @@
+[project]
+name = "agentshield-approvals"
+version = "0.1.0"
+description = "Cryptographic, single-use, argument-bound human-approval receipts, a pending-approval queue, and consequence-based approval tiering."
+requires-python = ">=3.11"
+dependencies = [
+    "agentshield-ledger",
+    "cryptography>=43.0",
+]
+
+[project.optional-dependencies]
+redis = ["redis>=5.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentshield_approvals"]
