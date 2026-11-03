@@ -29,6 +29,39 @@ class PolicyDecisionPoint:
     def __init__(self, schema: GeneratedSchema, policy_store: PolicyStore) -> None:
         self._schema = schema
         self._policy_store = policy_store
+        self._registered_tools: dict[str, dict[str, Any]] = {}
+
+    def register_tools(self, tools: list[dict[str, Any]], policy_text: str | None = None) -> None:
+        """Dynamically add tools into the Cedar schema and policy store."""
+        from agentshield_policy.mcp_schema import generate_schema
+
+        for t in tools:
+            name = t.get("name")
+            if name:
+                self._registered_tools[name] = t
+
+        new_schema = generate_schema(list(self._registered_tools.values()))
+        if policy_text is None:
+            existing_text = self._policy_store.policy_text
+            if existing_text and not existing_text.strip().startswith("// no policy configured"):
+                policy_text = existing_text
+            else:
+                policy_text = """
+                permit(
+                    principal,
+                    action,
+                    resource
+                ) unless {
+                    context.input has path && (
+                        context.input.path like "*.env*" ||
+                        context.input.path like "*id_rsa*" ||
+                        context.input.path like "*.git/*" ||
+                        context.input.path like "*credentials*"
+                    )
+                };
+                """
+        self._schema = new_schema
+        self._policy_store = PolicyStore(policy_text=policy_text, schema=new_schema)
 
     def authorize(self, *, session_id: str, tool_name: str, arguments: dict[str, Any]) -> Decision:
         """Evaluate a single proposed tool call.

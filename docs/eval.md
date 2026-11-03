@@ -86,6 +86,22 @@ text harmless even if the planner is fully persuaded.
 Pass `--attack policy_synthesizer_confusion` (or either of the other
 two names) to the CLI above.
 
+## Deterministic local measurement
+
+The live AgentDojo command requires a model provider and credentials. For
+repeatable CI measurements of the enforcement core itself, run:
+
+```powershell
+uv run python -m agentshield_eval run-local --samples 1000
+```
+
+This executes a benign egress call and two attacker sequences against the
+real `DecisionPipeline`: a policy-blocked exfiltration attempt and an
+untrusted-read-then-egress attempt. It reports benign utility, targeted
+attack success rate, median/p95 enforcement latency, and the denial stage.
+These results measure the reference monitor without model or network
+variance and must not be presented as AgentDojo task utility.
+
 ## Per-pillar ablation
 
 `agentshield_eval.ablation.ABLATION_CONFIGS` is the published matrix:

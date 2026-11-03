@@ -46,6 +46,9 @@ def _allowed_hosts() -> frozenset[str] | None:
     return hosts
 
 
+from agentshield_revocation.epoch_store import InMemoryEpochStore
+
+
 def build_pipeline() -> DecisionPipeline:
     tools: list[dict[str, Any]] = []
     schema = generate_schema(tools) if tools else generate_schema([])
@@ -53,10 +56,12 @@ def build_pipeline() -> DecisionPipeline:
     pdp = PolicyDecisionPoint(schema, store)
     registry = ToolRegistry()
     ledger = Ledger(signing_key=Ed25519PrivateKey.generate())
+    epoch_store = InMemoryEpochStore()
     return DecisionPipeline(
         policy_decision_point=pdp,
         ledger=ledger,
         tool_registry=registry,
+        epoch_source=epoch_store,
         egress_policy=EgressPolicy(allowed_hosts=_allowed_hosts()),
     )
 

@@ -66,6 +66,16 @@ def _run_suite(args: argparse.Namespace) -> int:
     return 0
 
 
+def _run_local(args: argparse.Namespace) -> int:
+    import asyncio
+
+    from agentshield_eval.local_benchmark import run_local_benchmark
+
+    results = asyncio.run(run_local_benchmark(args.samples))
+    print(json.dumps([result.as_dict() for result in results], indent=2))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="agentshield-eval")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -81,6 +91,13 @@ def build_parser() -> argparse.ArgumentParser:
     run_suite.add_argument("--logdir", default=None)
     run_suite.add_argument("--force-rerun", action="store_true")
     run_suite.set_defaults(handler=_run_suite)
+
+    run_local = subparsers.add_parser(
+        "run-local",
+        help="measure deterministic gateway behavior without a live model provider",
+    )
+    run_local.add_argument("--samples", type=int, default=1000)
+    run_local.set_defaults(handler=_run_local)
 
     return parser
 

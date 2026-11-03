@@ -86,6 +86,7 @@ class ToolCallRequest:
 
 class OutcomeStatus(StrEnum):
     DENIED = "denied"
+    AUTHORIZED = "authorized"
     DISPATCHED = "dispatched"
     DISPATCH_FAILED_UNCERTAIN = "dispatch_failed_uncertain"
 
@@ -131,6 +132,8 @@ class DecisionPipeline:
         request: ToolCallRequest,
         session: GatewaySession,
         dispatcher: ToolDispatcher,
+        *,
+        dispatch: bool = True,
     ) -> GatewayOutcome:
         decisions: list[Decision] = []
 
@@ -305,6 +308,13 @@ class DecisionPipeline:
                 "reason": overall.reason,
             },
         )
+
+        if not dispatch:
+            return GatewayOutcome(
+                decision=overall,
+                status=OutcomeStatus.AUTHORIZED,
+                result={"authorized": True},
+            )
 
         # --- Step 8: dispatch, then record the outcome ------------------
         try:

@@ -139,3 +139,24 @@ async def test_cedar_policy_violation_denies_through_http() -> None:
         body = call.json()
         assert body["decision"] == "DENY"
         assert body["stage"] == "cedar_policy"
+
+
+async def test_authorize_endpoint_checks_policy_without_dispatching() -> None:
+    async with await _make_client() as client:
+        await client.post("/sessions", json={"session_id": "s1", "tools": [SEND_EMAIL_TOOL]})
+        await client.post(
+            "/sessions/s1/capabilities", json={"tool_name": "send_email", "ttl_seconds": 300}
+        )
+        authorize = await client.post(
+            "/sessions/s1/tools/send_email/authorize",
+            headers={"x-agent-shield-principal": "s1"},
+            json={
+                "arguments": {"to": "alice@example.com", "body": "hi"},
+                "current_tool_schema": SEND_EMAIL_TOOL,
+            },
+        )
+        assert authorize.status_code == 200
+        body = authorize.json()
+        assert body["decision"] == "ALLOW"
+        assert body["status"] == "authorized"
+        assert body["result"] == {"authorized": True}
