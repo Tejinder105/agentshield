@@ -9,11 +9,11 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-A}}The Prompt Injection Threat}{1}{subsection.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-B}}Why In-Band Defenses Fail}{1}{subsection.1.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-C}}Contribution}{1}{subsection.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {II}Problem Statement}{1}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Attacker Model}{1}{subsection.2.1}\protected@file@percent }
 \citation{anderson1972computer}
 \citation{biba1977integrity}
 \citation{bell1973secure}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Problem Statement}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Attacker Model}{2}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Structural Limitation of In-Band Solutions}{2}{subsection.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Design Requirement}{2}{subsection.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Architecture Overview}{2}{section.3}\protected@file@percent }
@@ -27,25 +27,34 @@
 \newlabel{fig:architecture}{{1}{3}{AgentShield system architecture. \textcolor {green!60!black}{Green} = trusted deterministic enforcement; \textcolor {red!60!black}{Red} = untrusted data sources; \textcolor {blue!60!black}{Blue} = human-in-the-loop components; \textit {Yellow} = tamper-evident audit store}{figure.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The 8-stage fail-closed decision pipeline. The pipeline halts at the first denial; all outcomes are written to the ledger unconditionally.}}{3}{figure.2}\protected@file@percent }
 \newlabel{fig:pipeline}{{2}{3}{The 8-stage fail-closed decision pipeline. The pipeline halts at the first denial; all outcomes are written to the ledger unconditionally}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Dual-LLM Quarantine}{3}{subsection.5.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Dual-LLM quarantine. Raw untrusted bytes never reach the privileged planner. The non-LLM orchestrator dereferences \texttt  {var\_} handles only at dispatch time; the planner only sees opaque tokens.}}{3}{figure.3}\protected@file@percent }
 \newlabel{fig:dualllm}{{3}{3}{Dual-LLM quarantine. Raw untrusted bytes never reach the privileged planner. The non-LLM orchestrator dereferences \texttt {var\_} handles only at dispatch time; the planner only sees opaque tokens}{figure.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Dual-LLM Quarantine}{3}{subsection.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Monotonic Confinement}{3}{subsection.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Tamper-Evident Audit Ledger}{3}{subsection.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}Bounded-Latency Revocation}{3}{subsection.5.5}\protected@file@percent }
 \citation{cedar2023}
 \citation{agentdojo2024}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}Bounded-Latency Revocation}{4}{subsection.5.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Cryptographic Approval Receipts}{4}{subsection.5.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Implementation}{4}{section.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Technology Stack}{4}{subsection.6.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Fail-Closed Implementation Pattern}{4}{subsection.6.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Capability Token Design}{4}{subsection.6.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Per-pillar ablation configurations}}{4}{table.1}\protected@file@percent }
-\newlabel{tab:ablation}{{I}{4}{Per-pillar ablation configurations}{table.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Evaluation Design}{4}{section.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Standard Benchmark Metrics}{4}{subsection.7.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}Defense-Aware Adaptive Attacks}{4}{subsection.7.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Per-Pillar Ablation}{4}{subsection.7.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Per-pillar ablation configurations}}{5}{table.1}\protected@file@percent }
+\newlabel{tab:ablation}{{I}{5}{Per-pillar ablation configurations}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Local enforcement measurements (1,000 samples/configuration)}}{5}{table.2}\protected@file@percent }
+\newlabel{tab:local-results}{{II}{5}{Local enforcement measurements (1,000 samples/configuration)}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Local Enforcement Measurements}{5}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-E}}Live AgentDojo Empirical Findings}{5}{subsection.7.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Live AgentDojo empirical benchmark results}}{5}{table.3}\protected@file@percent }
+\newlabel{tab:live_results}{{III}{5}{Live AgentDojo empirical benchmark results}{table.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Trust Boundaries and Non-Goals}{5}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}Trust Hierarchy}{5}{subsection.8.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}Explicit Non-Goals}{5}{subsection.8.2}\protected@file@percent }
 \citation{progent2025}
 \citation{camel2025}
 \citation{fides2025}
@@ -60,14 +69,9 @@
 \bibcite{biba1977integrity}{8}
 \bibcite{bell1973secure}{9}
 \bibcite{anderson1972computer}{10}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Local enforcement measurements (1,000 samples/configuration)}}{5}{table.2}\protected@file@percent }
-\newlabel{tab:local-results}{{II}{5}{Local enforcement measurements (1,000 samples/configuration)}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Trust hierarchy in AgentShield}}{5}{table.3}\protected@file@percent }
-\newlabel{tab:trust}{{III}{5}{Trust hierarchy in AgentShield}{table.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Local Enforcement Measurements}{5}{subsection.7.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Trust Boundaries and Non-Goals}{5}{section.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}Trust Hierarchy}{5}{subsection.8.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}Explicit Non-Goals}{5}{subsection.8.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IX}Related Work}{5}{section.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{5}{section*.1}\protected@file@percent }
-\gdef \@abspage@last{5}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Trust hierarchy in AgentShield}}{6}{table.4}\protected@file@percent }
+\newlabel{tab:trust}{{IV}{6}{Trust hierarchy in AgentShield}{table.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Related Work}{6}{section.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {X}Conclusion}{6}{section.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{6}{section*.1}\protected@file@percent }
+\gdef \@abspage@last{6}

@@ -1,6 +1,6 @@
-PWD D:\agentshield\Deliverables
+PWD d:\agentshield\Deliverables
 INPUT C:\Users\tejin\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT agentshield_ieee_report_final.tex
+INPUT d:\agentshield\Deliverables\agentshield_ieee_report_final.tex
 OUTPUT agentshield_ieee_report_final.log
 INPUT C:\Users\tejin\AppData\Local\Programs\MiKTeX\tex\latex\ieeetran\IEEEtran.cls
 INPUT C:\Users\tejin\AppData\Local\Programs\MiKTeX\tex\latex\ieeetran\IEEEtran.cls
