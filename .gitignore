@@ -22,3 +22,8 @@ coverage/
 Thumbs.db
 agentshield-ledger-data/
 /Deliverables
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.log
